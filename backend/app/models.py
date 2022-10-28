@@ -26,13 +26,28 @@ class User(db.Model):
     def __repr__(self) -> str:
         return f'{self.name} - {self.public_id}'
 
-class Vehicles(db.Model):
+class Vehicle(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     brand = db.Column(db.String(50), nullable=False)
-    model = db.Column(db.String(50), nullable=False)
+    model = db.Column(db.String(5), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    mileage = db.Column(db.Float, nullable=False)
     register_date = db.Column(db.DateTime(timezone=True), default=func.now())
 
     def __repr__(self) -> str:
-        return f'{self.name} - {self.brand}'
+        return f'{self.brand} - {self.name}'
+    
+    @property
+    def show_price(self):
+        return f'R$ {self.price:,.0f}'.replace(',', '.')
+    
+    @property
+    def show_mileage(self):
+        return f'{self.mileage:,.0f}km'.replace(',', '.')
+    
+    @property
+    def show_register_date(self):
+        return self.register_date.strftime("%Y-%m-%d")
+
 

@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, Blueprint
 from datetime import timedelta, datetime
 import uuid
 import jwt
@@ -7,7 +7,9 @@ from . import app, db
 from .models import User
 
 #Authentication
-@app.route('/register', methods=['POST'])
+auth = Blueprint('auth', __name__)
+
+@auth.route('/register', methods=['POST'])
 def register():
     try:
         data = request.get_json()
@@ -20,7 +22,7 @@ def register():
     except:
         return jsonify({"message": "Error creating new user, try again"})
 
-@app.route('/login', methods=['GET'])
+@auth.route('/login', methods=['GET'])
 def login():
     data = request.get_json()
     if data.get('email') and data.get('password'):
@@ -29,6 +31,7 @@ def login():
             if user.check_password_hash(data['password']):
                 exp = datetime.utcnow() + timedelta(hours=12)
                 token = jwt.encode({"public_id": user.public_id, "exp": exp}, app.secret_key)
+
                 return jsonify({"token": token.decode('UTF-8')})
             return jsonify({"message": "Error logging, wrong password!"})
         return jsonify({"message": "Error logging, email not found!"})

@@ -14,10 +14,17 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-from .models import User, Vehicles
+from .models import User, Vehicle
+
 create_db()
 
-from .users import *
-from .auth import *
-from .views import *
+from .auth import auth
+from .users import users
+from .routes import routes
+
+app.register_blueprint(auth)
+app.register_blueprint(users)
+app.register_blueprint(routes)
+
+
 
