@@ -397,8 +397,6 @@ export default {
         newVehicle: {name: '', brand: '', model: '', price: '', mileage: ''},
         vehicleImage: null,
         vehicleEditImage: null,
-        dialogExclude: false,
-        dialogPromote: false,
     }),
     methods: {
         excludeUser(public_id){
