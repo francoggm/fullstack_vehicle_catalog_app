@@ -2,11 +2,15 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import os
+import uuid
 
 def create_db():
     db_name = app.config['DATABASE_URI'].split('/')[-1]
     if not db_name in os.listdir(os.getcwd()):
         db.create_all()
+        # admin = User(name="admin", email="admin@admin.com", password="12345", admin=True, public_id=str(uuid.uuid4()))
+        # db.session.add(admin)
+        # db.session.commit()
 
 app = Flask(__name__)
 cors = CORS(app)

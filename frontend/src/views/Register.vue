@@ -138,6 +138,9 @@ export default {
                 .then((res) => {
                     let response = res['data']['message']
                     if (response == "User has been registered"){
+                        this.$store.dispatch("setAlert", true)
+                        this.$store.dispatch("setAlertText", "Usuário cadastrado com sucesso!")
+                        this.$store.dispatch("setAlertColor", "green")
                         this.$router.push("/login")
                     }
                 })

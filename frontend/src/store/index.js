@@ -36,7 +36,17 @@ export default new Vuex.Store({
     },
     CHANGE_SELECTED_PAGE(state, payload){
       state.selectedPage = payload;
+    },
+    LOGOUT_USER(state, payload){
+      state.token = '';
+      state.userAdmin = false;
+
+      state.alertText = "Token expirado, favor logar novamete!"
+      state.alert = true;
+      state.alertColor = "red";
+
     }
+
   },
   actions: {
     setToken(context, payload){
@@ -56,7 +66,7 @@ export default new Vuex.Store({
     },
     setSelectedPage(context, payload){
       context.commit('CHANGE_SELECTED_PAGE', payload)
-    }
+    },
 
   },
   modules: {

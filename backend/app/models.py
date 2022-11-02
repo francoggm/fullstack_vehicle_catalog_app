@@ -33,6 +33,9 @@ class Vehicle(db.Model):
     model = db.Column(db.String(5), nullable=False)
     price = db.Column(db.Float, nullable=False)
     mileage = db.Column(db.Float, nullable=False)
+    img = db.Column(db.Text, nullable=False)
+    img_name = db.Column(db.Text, nullable=False)
+    mimetype = db.Column(db.Text, nullable=False)
     register_date = db.Column(db.DateTime(timezone=True), default=func.now())
 
     def __repr__(self) -> str:

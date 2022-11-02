@@ -9,11 +9,6 @@ from .models import User
 #Authentication
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-def generate_token(payload, exp=datetime.utcnow() + timedelta(minutes=20)):
-    if isinstance(payload, dict):
-        payload.update({"exp": exp})
-        return jwt.encode(payload, app.secret_key)
-
 @auth.route('/register', methods=['POST'])
 def register():
     try:
@@ -35,8 +30,8 @@ def login():
             user = User.query.filter_by(email=data['email']).first()
             if user:
                 if user.check_password_hash(data['password']):
-                    token = generate_token({"public_id": user.public_id})
-                    print(token)
+                    payload = {"public_id": user.public_id, "exp": datetime.utcnow() + timedelta(minutes=20)}
+                    token = jwt.encode(payload, app.secret_key)
                     return make_response(jsonify({"token": token.decode('UTF-8'), "admin": user.admin}), 200)
                 return make_response(jsonify({"message": "Error logging, wrong password!"}), 404)
             return make_response(jsonify({"message": "Error logging, email not found!"}), 404)
@@ -54,8 +49,9 @@ def refresh_token():
         user = User.query.filter_by(public_id=data['public_id']).first()
         if user:
             exp = datetime.fromtimestamp(data['exp'])
-            if datetime.now() + timedelta(minutes=8) >= exp:
-                new_token = generate_token({"public_id": user.public_id})
+            if datetime.utcnow() + timedelta(minutes=5) >= exp:
+                payload = {"public_id": user.public_id, "exp": datetime.utcnow() + timedelta(minutes=20)}
+                new_token = jwt.encode(payload, app.secret_key)
                 return make_response(jsonify({"token": new_token.decode('UTF-8')}), 200)
             return make_response(jsonify({"message": ""}), 425)
         else:

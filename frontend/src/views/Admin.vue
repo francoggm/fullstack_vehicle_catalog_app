@@ -33,7 +33,6 @@
                                     <v-dialog
                                         transition="dialog-bottom-transition"
                                         max-width="600"
-                                        v-model="dialogPromote"
                                     >
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn class="mr-3" fab small color="grey darken-1" v-bind="attrs" v-on="on" dark v-if="!user.admin">
@@ -53,7 +52,7 @@
                                                     </div>
                                                 </v-card-text>
                                                 <v-card-actions class="justify-center">
-                                                    <v-btn dark color="blue darken-2" class="mr-4" @click="promoteUser(user.public_id)">
+                                                    <v-btn dark color="blue darken-2" class="mr-4" @click="promoteUser(user.public_id); dialogPromote.value = false;">
                                                         Promover
                                                     </v-btn>
                                                     <v-btn dark color="grey lighten-1" @click="dialogPromote.value = false">Cancelar</v-btn>
@@ -64,7 +63,6 @@
                                     <v-dialog
                                         transition="dialog-bottom-transition"
                                         max-width="600"
-                                        v-model="dialogExclude"
                                     >
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn fab small color="red darken-2" dark v-bind="attrs" v-on="on">
@@ -84,7 +82,7 @@
                                                     </div>
                                                 </v-card-text>
                                                 <v-card-actions class="justify-center">
-                                                    <v-btn dark color="red darken-2" class="mr-4" @click="excludeUser(user.public_id)">
+                                                    <v-btn dark color="red darken-2" class="mr-4" @click="excludeUser(user.public_id); dialogExclude.value = false;">
                                                         Deletar
                                                     </v-btn>
                                                     <v-btn dark color="grey lighten-1" @click="dialogExclude.value = false">Cancelar</v-btn>
@@ -98,11 +96,6 @@
                     </template>
                 </v-simple-table>
             </v-card>
-
-
-
-
-
             <v-card width="60%" class="pa-5 mb-12">
                 <v-card-title class="justify-center">Veículos</v-card-title>
                 <v-simple-table>
@@ -132,7 +125,7 @@
                                                 <v-col>
                                                     <v-file-input
                                                     solo
-                                                    disabled
+                                                    v-model="vehicleImage"
                                                     placeholder="Escolha uma Imagem"
                                                     prepend-icon="mdi-camera"
                                                     label="Avatar"
@@ -244,7 +237,7 @@
                             >
                                 <td>
                                     <v-list-item-avatar>
-                                        <v-img src="../assets/novo-hb20-3.webp"></v-img>
+                                        <v-img :src="'data:;base64,'+vehicle.image"></v-img>
                                     </v-list-item-avatar>
                                 </td>
                                 <td>{{vehicle.name}}</td>
@@ -272,7 +265,7 @@
                                                         <v-col>
                                                             <v-file-input
                                                             solo
-                                                            disabled
+                                                            v-model="vehicleEditImage"
                                                             placeholder="Escolha uma Imagem"
                                                             prepend-icon="mdi-camera"
                                                             label="Avatar"
@@ -402,6 +395,8 @@ export default {
         users: [],
         vehicles: [],
         newVehicle: {name: '', brand: '', model: '', price: '', mileage: ''},
+        vehicleImage: null,
+        vehicleEditImage: null,
         dialogExclude: false,
         dialogPromote: false,
     }),
@@ -423,7 +418,8 @@ export default {
                 console.log(err)
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
-                    this.tokenExpired();
+                    this.$store.commit('LOGOUT_USER');
+                    this.$router.push('/login')
                 } else {
                     this.$store.dispatch("setAlert", true)
                     this.$store.dispatch("setAlertText", "Erro ao excluir usuário!")
@@ -447,7 +443,8 @@ export default {
                 console.log(err)
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
-                    this.tokenExpired();
+                    this.$store.commit('LOGOUT_USER');
+                    this.$router.push('/login')
                 } else {
                     this.$store.dispatch("setAlert", true)
                     this.$store.dispatch("setAlertText", "Erro ao excluir veículo!")
@@ -457,11 +454,20 @@ export default {
         },
         updateVehicle(vehicle){
             const path = this.$store.state.ip + ":" + this.$store.state.port + "/vehicle/" + vehicle.id
+            const formData = new FormData();
+            if (this.vehicleEditImage){
+                formData.append('file', this.vehicleEditImage)
+            }
+            for (const key in vehicle){
+                if (!(key == "image"))
+                    formData.append(key, vehicle[key])
+            }
             axios({
                 method: "put",
                 url: path,
-                data: {name:vehicle.name, brand: vehicle.brand, model: vehicle.model, price: vehicle.price, mileage: vehicle.mileage},
+                data: formData,
                 headers: {
+                    'Content-Type': 'multipart/form-data',
                     'x-access-token': this.$store.state.token
                 }
             })
@@ -474,7 +480,8 @@ export default {
                 console.log(err)
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
-                    this.tokenExpired();
+                    this.$store.commit('LOGOUT_USER');
+                    this.$router.push('/login')
                 } else {
                     this.$store.dispatch("setAlert", true)
                     this.$store.dispatch("setAlertText", "Erro ao atualizar veículo!")
@@ -483,27 +490,39 @@ export default {
             })
         },
         createVehicle(){
-            console.log('creating')
-            if (this.newVehicle['name'] != '' && this.newVehicle['brand'] != '' && this.newVehicle['model'] != '' && this.newVehicle['price'] != '' && this.newVehicle['mileage'] != ''){
+            if (this.newVehicle['name'] != '' && this.newVehicle['brand'] != '' && this.newVehicle['model'] != '' && this.newVehicle['price'] != '' && this.newVehicle['mileage'] != '' && this.vehicleImage){
                 const path = this.$store.state.ip + ":" + this.$store.state.port + "/vehicle"
+                const formData = new FormData();
+                formData.append('file', this.vehicleImage);
+                for(const key in this.newVehicle){
+                    formData.append(key, this.newVehicle[key])
+                }
                 axios
-                .post(path, {name: this.newVehicle['name'], brand: this.newVehicle['brand'], model: this.newVehicle['model'], price: this.newVehicle['price'], mileage: this.newVehicle['mileage']}, {headers: {'x-access-token': this.$store.state.token}})
+                .post(path, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'x-access-token': this.$store.state.token
+                    }
+                })
                 .then((res) => {
-                    this.getVehicles()
+                    console.log(res)
+                    this.getVehicles();
                 })
                 .catch((err) => {
                     console.log(err)
                     const error = err['response']['data']['message']
                     if (error == "Invalid token"){
-                        this.tokenExpired();
+                        this.$store.commit('LOGOUT_USER');
+                        this.$router.push('/login')
                     } else {
                         this.$store.dispatch("setAlert", true)
                         this.$store.dispatch("setAlertText", "Erro ao criar veículo!")
                         this.$store.dispatch("setAlertColor", "red")
                     }   
                 })
+                this.newVehicle = {name: '', brand: '', model: '', price: '', mileage: ''}
+                this.vehicleImage = null;
             }
-            this.newVehicle = {name: '', brand: '', model: '', price: '', mileage: ''}
         },
         promoteUser(public_id){
             console.log(public_id)
@@ -524,7 +543,8 @@ export default {
                 console.log(err)
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
-                    this.tokenExpired();
+                    this.$store.commit('LOGOUT_USER');
+                    this.$router.push('/login')
                 } else {
                     this.$store.dispatch("setAlert", true)
                     this.$store.dispatch("setAlertText", "Erro ao promover usuário!")
@@ -548,7 +568,8 @@ export default {
                 console.log(err)
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
-                    this.tokenExpired();
+                    this.$store.commit('LOGOUT_USER');
+                    this.$router.push('/login')
                 }
             })
         },
@@ -558,20 +579,22 @@ export default {
             .get(path)
             .then((res) => {
                 this.vehicles = res.data['vehicles']
+                console.log(this.vehicles)
             })
             .catch((err) => {
                 console.log(err)
+                const error = err['response']['data']['message']
+                if (error == "Invalid token"){
+                    this.$store.commit('LOGOUT_USER');
+                    this.$router.push('/login')
+                }
             })
         },
-        tokenExpired(){
-            this.$store.dispatch("setToken", '')
-            this.$store.dispatch("setAdmin", false)
-            this.$router.push('/login')
-
-            this.$store.dispatch("setAlert", true)
-            this.$store.dispatch("setAlertText", "Token expirado favor logar novamente!")
-            this.$store.dispatch("setAlertColor", "red")
-        },
+    },
+    updated(){
+        if (this.users.length == 0){
+            this.$store.commit('LOGOUT_USER')
+        }
     },
     beforeMount(){
         this.$store.dispatch("setSelectedPage", 1)
@@ -586,9 +609,5 @@ export default {
             this.getVehicles()
         }
     },
-    updated(){
-        if (this.users.length == 0)
-            this.tokenExpired()
-    }
 }
 </script>

@@ -51,7 +51,7 @@
                     <v-card color="gray" width="350px">
                         <v-img
                             height="250"
-                            src="../assets/novo-hb20-3.webp"
+                            :src="'data:;base64,' + vehicle.image"
                         ></v-img>
                         <v-card-title>
                             {{vehicle.brand}} {{vehicle.name}}
@@ -64,9 +64,6 @@
                         </v-card-title>
                     </v-card>
                 </v-flex>
-                <!-- <v-flex v-for="vehicle in vehicles" :key="vehicle" class="flex-empty">
-                    <v-card width="350px"></v-card>
-                </v-flex> -->
             </v-layout>
         </v-container>
     </v-app>
@@ -194,11 +191,8 @@ export default {
         .catch((err) => {
             console.log(err)
         })
-        
     },
-    updated(){
-        console.log(this.vehiclesPlaceholder)
-    }
+
 }
 </script>
 
