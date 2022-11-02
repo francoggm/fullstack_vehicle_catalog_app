@@ -9,7 +9,7 @@ from .models import User
 #Authentication
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
-def generate_token(payload, exp=datetime.utcnow() + timedelta(minutes=15)):
+def generate_token(payload, exp=datetime.utcnow() + timedelta(minutes=20)):
     if isinstance(payload, dict):
         payload.update({"exp": exp})
         return jwt.encode(payload, app.secret_key)
@@ -52,8 +52,8 @@ def refresh_token():
             exp = datetime.fromtimestamp(data['exp'])
             if datetime.now() + timedelta(minutes=5) >= exp:
                 new_token = generate_token({"public_id": user.public_id})
-                return jsonify({"token": new_token.decode('UTF-8')})
-            return jsonify({"message": ""})
+                return make_response(jsonify({"token": new_token.decode('UTF-8')}), 200)
+            return make_response(jsonify({"message": ""}), 425)
         else:
             return make_response(jsonify({"message": "Invalid user"}), 401)
     except:

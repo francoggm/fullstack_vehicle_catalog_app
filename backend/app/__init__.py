@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import os
 
@@ -8,7 +9,10 @@ def create_db():
         db.create_all()
 
 app = Flask(__name__)
+cors = CORS(app)
+
 app.config.from_pyfile('../config.py')
+app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DATABASE_URI']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

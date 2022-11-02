@@ -11,7 +11,7 @@ def get_all_vehicles():
     try:
         vehicles = Vehicle.query.all()
         if vehicles:
-            output = [{"name": vehicle.name, "brand": vehicle.brand, "model": vehicle.model, "price": vehicle.show_price, "mileage": vehicle.show_mileage, "register": vehicle.show_register_date} for vehicle in vehicles]
+            output = [{"name": vehicle.name, "brand": vehicle.brand, "model": vehicle.model, "price": vehicle.price, "mileage": vehicle.mileage, "register": vehicle.show_register_date, "id": vehicle.id} for vehicle in vehicles]
             return jsonify({"vehicles": output})
         return jsonify({"message": "Error getting all vehicles, no vehicle found"})
     except:
@@ -22,7 +22,7 @@ def get_vehicle(id):
     try:
         vehicle = Vehicle.query.get(int(id))
         if vehicle:
-            return jsonify({"vehicle": {"name": vehicle.name, "brand": vehicle.brand, "model": vehicle.model, "price": vehicle.show_price, "mileage": vehicle.show_mileage, "register": vehicle.show_register_date}})
+            return jsonify({"vehicle": {"name": vehicle.name, "brand": vehicle.brand, "model": vehicle.model, "price": vehicle.show_price, "mileage": vehicle.show_mileage, "register": vehicle.show_register_date, "id": vehicle.id}})
         return jsonify({"message": "Error getting vehicle, no vehicle found"})
     except:
         return jsonify({"message": "Error getting vehicle, try again"})
