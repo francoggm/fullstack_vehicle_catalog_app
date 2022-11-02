@@ -36,6 +36,7 @@ def login():
             if user:
                 if user.check_password_hash(data['password']):
                     token = generate_token({"public_id": user.public_id})
+                    print(token)
                     return make_response(jsonify({"token": token.decode('UTF-8'), "admin": user.admin}), 200)
                 return make_response(jsonify({"message": "Error logging, wrong password!"}), 404)
             return make_response(jsonify({"message": "Error logging, email not found!"}), 404)
@@ -53,7 +54,7 @@ def refresh_token():
         user = User.query.filter_by(public_id=data['public_id']).first()
         if user:
             exp = datetime.fromtimestamp(data['exp'])
-            if datetime.now() + timedelta(minutes=5) >= exp:
+            if datetime.now() + timedelta(minutes=8) >= exp:
                 new_token = generate_token({"public_id": user.public_id})
                 return make_response(jsonify({"token": new_token.decode('UTF-8')}), 200)
             return make_response(jsonify({"message": ""}), 425)

@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, make_response
 
 from .models import Vehicle
 from .token import token_required
@@ -63,11 +63,11 @@ def update_vehicle(current_user, id):
                 vehicle.price = data['price']
                 vehicle.mileage = data['mileage']
                 db.session.commit()
-                return jsonify({"message": "Vehicle has been updated"})
-            return jsonify({"message": "Error creating vehicle, missing some informations"})
-        return jsonify({"message": "Error updating vehicle, no vehicle found"})
+                return make_response(jsonify({"message": "Vehicle has been updated"}), 200)
+            return make_response(jsonify({"message": "Error creating vehicle, missing some informations"}), 401)
+        return make_response(jsonify({"message": "Error updating vehicle, no vehicle found"}), 400)
     except:
-        return jsonify({"message": "Error updating vehicle, try again"})
+        return make_response(jsonify({"message": "Error updating vehicle, try again"}), 400)
 
 @routes.route('/vehicle/<id>', methods=['DELETE'])
 @token_required

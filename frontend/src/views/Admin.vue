@@ -53,7 +53,7 @@
                                                     </div>
                                                 </v-card-text>
                                                 <v-card-actions class="justify-center">
-                                                    <v-btn dark color="green lighten-1" class="mr-4" @click="promoteUser(user.public_id)">
+                                                    <v-btn dark color="blue darken-2" class="mr-4" @click="promoteUser(user.public_id)">
                                                         Promover
                                                     </v-btn>
                                                     <v-btn dark color="grey lighten-1" @click="dialogPromote.value = false">Cancelar</v-btn>
@@ -98,9 +98,131 @@
                     </template>
                 </v-simple-table>
             </v-card>
+
+
+
+
+
             <v-card width="60%" class="pa-5 mb-12">
                 <v-card-title class="justify-center">Veículos</v-card-title>
                 <v-simple-table>
+                    <template v-slot:top>
+                        <v-dialog
+                            max-width="700px"
+                            >
+                            <template v-slot:activator="{ on, attrs }">
+                                <div class="text-center">
+                                    <v-btn
+                                    dark
+                                    color="blue darken-2"
+                                    class="mb-4"
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    >
+                                        Criar Novo Veículo
+                                    </v-btn>
+                                </div>
+                            </template>
+                            <template v-slot:default="dialogEditVehicle">
+                                <v-card class="pa-5">
+                                    <v-card-title class="mb-3 justify-center">Criar Veículo</v-card-title>
+                                    <v-card-text>
+                                        <v-form>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-file-input
+                                                    solo
+                                                    disabled
+                                                    placeholder="Escolha uma Imagem"
+                                                    prepend-icon="mdi-camera"
+                                                    label="Avatar"
+                                                    show-size
+                                                    ></v-file-input>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-text-field
+                                                        v-model="newVehicle.name"
+                                                        required
+                                                        name="name"
+                                                        solo
+                                                        placeholder="Nome"
+                                                        hint="Nome"
+                                                        persistent-hint
+                                                        prepend-icon="mdi-car-select"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col>
+                                                    <v-text-field
+                                                        v-model="newVehicle.brand"
+                                                        required
+                                                        name="brand"
+                                                        solo
+                                                        placeholder="Marca"
+                                                        hint="Marca"
+                                                        persistent-hint
+                                                        prepend-icon="mdi-car-settings"
+                                                    ></v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                            <v-row>
+                                                <v-col>
+                                                    <v-text-field
+                                                        v-model="newVehicle.model"
+                                                        required
+                                                        name="model"
+                                                        solo
+                                                        placeholder="Modelo"
+                                                        hint="Modelo"
+                                                        persistent-hint
+                                                        prepend-icon="mdi-car-clock"
+                                                    >
+                                                    </v-text-field>
+                                                </v-col>
+                                                <v-col> 
+                                                    <v-text-field
+                                                        v-model="newVehicle.price"
+                                                        required
+                                                        name="price"
+                                                        solo
+                                                        placeholder="Preço"
+                                                        hint="Preço"
+                                                        persistent-hint
+                                                        prepend-icon="mdi-car-info"
+                                                        type="number"
+                                                    >
+                                                    </v-text-field>
+                                                </v-col>
+                                                <v-col>
+                                                    <v-text-field
+                                                        v-model="newVehicle.mileage"
+                                                        required
+                                                        name="mileage"
+                                                        solo
+                                                        placeholder="Quilometragem"
+                                                        hint="Quilometragem"
+                                                        persistent-hint
+                                                        type="number"
+                                                        prepend-icon="mdi-car-speed-limiter"
+                                                    >
+                                                    </v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                        </v-form>
+                                    </v-card-text>
+                                    <v-card-actions class="justify-end">
+                                        <v-btn class="mr-5" dark color="blue darken-2" @click="createVehicle(); dialogEditVehicle.value = false;">
+                                            Criar
+                                        </v-btn>
+                                        <v-btn dark color="grey lighten-1" @click="dialogEditVehicle.value = false">
+                                            Fechar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </template>
+                        </v-dialog>
+                    </template>
                     <template v-slot:default>
                         <thead>
                             <tr>
@@ -133,10 +255,9 @@
                                 <td>{{vehicle.format_register_date}}</td>
                                 <td>{{vehicle.id}}</td>
                                 <td class="pb-3 pt-3">
-
                                     <v-dialog
                                         transition="dialog-bottom-transition"
-                                        max-width="600"
+                                        max-width="700"
                                     >
                                         <template v-slot:activator="{ on, attrs }">
                                             <v-btn class="mr-3" fab small color="grey darken-1" dark v-bind="attrs" v-on="on">
@@ -220,15 +341,14 @@
                                                     </v-row>
                                                 </v-card-text>
                                                 <v-card-actions class="justify-end">
-                                                    <v-btn class="mr-5" dark color="green lighten-1" @click="updateVehicle(vehicle)">
+                                                    <v-btn class="mr-5" dark color="blue darken-2" @click="updateVehicle(vehicle); dialogEditVehicle.value =false;">
                                                         Salvar
                                                     </v-btn>
-                                                    <v-btn dark color="grey lighten-1" @click="dialogEditVehicle.value = false">
+                                                    <v-btn dark color="grey lighten-1" @click="dialogEditVehicle.value =false">
                                                         Fechar
                                                     </v-btn>
                                                 </v-card-actions>
                                             </v-card>
-                                            
                                         </template>
                                     </v-dialog>
 
@@ -254,7 +374,7 @@
                                                     </div>
                                                 </v-card-text>
                                                 <v-card-actions class="justify-center">
-                                                    <v-btn dark color="red darken-2" class="mr-4" @click="excludeVehicle(vehicle.id)">
+                                                    <v-btn dark color="red darken-2" class="mr-4" @click="excludeVehicle(vehicle.id); dialogExcludeVehicle.value = false;">
                                                         Deletar
                                                     </v-btn>
                                                     <v-btn dark color="grey lighten-1" @click="dialogExcludeVehicle.value = false">
@@ -281,9 +401,9 @@ export default {
     data: () => ({
         users: [],
         vehicles: [],
+        newVehicle: {name: '', brand: '', model: '', price: '', mileage: ''},
         dialogExclude: false,
         dialogPromote: false,
-        dialogExcludeVehicle: false
     }),
     methods: {
         excludeUser(public_id){
@@ -304,6 +424,10 @@ export default {
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
                     this.tokenExpired();
+                } else {
+                    this.$store.dispatch("setAlert", true)
+                    this.$store.dispatch("setAlertText", "Erro ao excluir usuário!")
+                    this.$store.dispatch("setAlertColor", "red")
                 }
             })
         },
@@ -317,7 +441,6 @@ export default {
             axios
             .delete(path, config)
             .then((res) => {
-                this.dialogExcludeVehicle = false;
                 this.getVehicles();
             })
             .catch((err) => {
@@ -325,6 +448,10 @@ export default {
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
                     this.tokenExpired();
+                } else {
+                    this.$store.dispatch("setAlert", true)
+                    this.$store.dispatch("setAlertText", "Erro ao excluir veículo!")
+                    this.$store.dispatch("setAlertColor", "red")
                 }
             })
         },
@@ -333,10 +460,50 @@ export default {
             axios({
                 method: "put",
                 url: path,
+                data: {name:vehicle.name, brand: vehicle.brand, model: vehicle.model, price: vehicle.price, mileage: vehicle.mileage},
                 headers: {
                     'x-access-token': this.$store.state.token
                 }
             })
+            .then((res) => {
+                console.log(res)
+                this.getVehicles();
+                this.dialogEditVehicle = false;
+            })
+            .catch((err) => {
+                console.log(err)
+                const error = err['response']['data']['message']
+                if (error == "Invalid token"){
+                    this.tokenExpired();
+                } else {
+                    this.$store.dispatch("setAlert", true)
+                    this.$store.dispatch("setAlertText", "Erro ao atualizar veículo!")
+                    this.$store.dispatch("setAlertColor", "red")
+                }
+            })
+        },
+        createVehicle(){
+            console.log('creating')
+            if (this.newVehicle['name'] != '' && this.newVehicle['brand'] != '' && this.newVehicle['model'] != '' && this.newVehicle['price'] != '' && this.newVehicle['mileage'] != ''){
+                const path = this.$store.state.ip + ":" + this.$store.state.port + "/vehicle"
+                axios
+                .post(path, {name: this.newVehicle['name'], brand: this.newVehicle['brand'], model: this.newVehicle['model'], price: this.newVehicle['price'], mileage: this.newVehicle['mileage']}, {headers: {'x-access-token': this.$store.state.token}})
+                .then((res) => {
+                    this.getVehicles()
+                })
+                .catch((err) => {
+                    console.log(err)
+                    const error = err['response']['data']['message']
+                    if (error == "Invalid token"){
+                        this.tokenExpired();
+                    } else {
+                        this.$store.dispatch("setAlert", true)
+                        this.$store.dispatch("setAlertText", "Erro ao criar veículo!")
+                        this.$store.dispatch("setAlertColor", "red")
+                    }   
+                })
+            }
+            this.newVehicle = {name: '', brand: '', model: '', price: '', mileage: ''}
         },
         promoteUser(public_id){
             console.log(public_id)
@@ -344,7 +511,6 @@ export default {
             axios({
                 method: "put",
                 url: path,
-                data: {},
                 headers: {
                     'x-access-token': this.$store.state.token
                 }
@@ -358,7 +524,11 @@ export default {
                 console.log(err)
                 const error = err['response']['data']['message']
                 if (error == "Invalid token"){
-                    this.tokenExpired(); 
+                    this.tokenExpired();
+                } else {
+                    this.$store.dispatch("setAlert", true)
+                    this.$store.dispatch("setAlertText", "Erro ao promover usuário!")
+                    this.$store.dispatch("setAlertColor", "red")
                 }
             })
         },
@@ -401,7 +571,7 @@ export default {
             this.$store.dispatch("setAlert", true)
             this.$store.dispatch("setAlertText", "Token expirado favor logar novamente!")
             this.$store.dispatch("setAlertColor", "red")
-        }
+        },
     },
     beforeMount(){
         this.$store.dispatch("setSelectedPage", 1)
