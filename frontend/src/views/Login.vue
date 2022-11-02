@@ -137,8 +137,8 @@ export default {
             }
         }
     },
-    updated(){
-        // console.log(this.$store.state.token, this.$store.state.userAdmin)
+    created(){
+        this.$store.dispatch("setSelectedPage", 1)
     }
 }
 </script>

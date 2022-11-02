@@ -154,6 +154,9 @@ export default {
                 })
             }
         }
+    },
+    created(){
+        this.$store.dispatch("setSelectedPage", 2)
     }
 }
 </script>

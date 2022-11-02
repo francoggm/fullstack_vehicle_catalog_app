@@ -16,7 +16,7 @@
         </template>
         <v-list>
             <v-list-item-group
-                v-model="selectedPage"
+                v-model="$store.state.selectedPage"
                 color="primary"
             >
                 <v-list-item
@@ -47,6 +47,18 @@
       </v-btn>
 
     </v-app-bar>
+    <v-alert
+      v-model="$store.state.alert"
+      dismissible
+      :color="$store.state.alertColor"
+      border="left"
+      elevation="2"
+      colored-border
+      icon="mdi-alert-circle"
+      class="mt-5"
+    >
+      {{$store.state.alertText}}
+    </v-alert>
   </nav>
 </template>
 
@@ -54,7 +66,6 @@
 export default {
     data(){
         return {
-            selectedPage: 0,
         }
     },
     computed: {

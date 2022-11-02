@@ -177,6 +177,8 @@ export default {
         }
     },
     created(){
+        this.$store.dispatch("setSelectedPage", 0)
+
         const path = this.$store.state.ip + ":" + this.$store.state.port + "/vehicle"
         axios
         .get(path)

@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 import jwt
 
 from . import app
@@ -18,6 +18,6 @@ def token_required(f):
             data = jwt.decode(token, app.secret_key)
             user = User.query.filter_by(public_id=data['public_id']).first()
         except:
-            return jsonify({"message": "Invalid token"})
+            return make_response(jsonify({"message": "Invalid token"}), 401)
         return f(user, *args, **kwargs)
     return decorated
