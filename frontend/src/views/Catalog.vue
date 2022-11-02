@@ -177,7 +177,7 @@ export default {
         }
     },
     created(){
-        const path = 'http://127.0.0.1:5000/vehicle'
+        const path = this.$store.state.ip + ":" + this.$store.state.port + "/vehicle"
         axios
         .get(path)
         .then((res) => {

@@ -23,22 +23,25 @@ def register():
             db.session.add(user)
             db.session.commit()
             return jsonify({"message": "User has been registered"})
-        return jsonify({"message": "Error creating new user, missing informations"})
+        return make_response(jsonify({"message": "Error creating new user, missing informations"}), 406)
     except:
-        return jsonify({"message": "Error creating new user, try again"})
+        return make_response(jsonify({"message": "Error creating new user, try again"}))
 
-@auth.route('/login', methods=['GET'])
+@auth.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    if data.get('email') and data.get('password'):
-        user = User.query.filter_by(email=data['email']).first()
-        if user:
-            if user.check_password_hash(data['password']):
-                token = generate_token({"public_id": user.public_id})
-                return jsonify({"token": token.decode('UTF-8')})
-            return jsonify({"message": "Error logging, wrong password!"})
-        return jsonify({"message": "Error logging, email not found!"})
-    return jsonify({"message": "Error logging, missing informations!"})
+    try:
+        data = request.get_json()
+        if data.get('email') and data.get('password'):
+            user = User.query.filter_by(email=data['email']).first()
+            if user:
+                if user.check_password_hash(data['password']):
+                    token = generate_token({"public_id": user.public_id})
+                    return make_response(jsonify({"token": token.decode('UTF-8'), "admin": user.admin}), 200)
+                return make_response(jsonify({"message": "Error logging, wrong password!"}), 404)
+            return make_response(jsonify({"message": "Error logging, email not found!"}), 404)
+        return make_response(jsonify({"message": "Error logging, missing informations!"}), 406)
+    except:
+        return make_response(jsonify({"message": "Error logging, try again"}), 406)
 
 @auth.route('/refresh_token', methods=['GET'])
 def refresh_token():

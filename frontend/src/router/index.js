@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 import Vehicle from '../views/Vehicle.vue';
 import Catalog from '../views/Catalog.vue';
 import Admin from '../views/Admin.vue';
+import Login from '../views/Login.vue';
+import Register from '../views/Register.vue';
 
 Vue.use(VueRouter);
 
@@ -17,6 +19,16 @@ const routes = [
     path: '/vehicle/:id',
     name: 'Vehicle',
     component: Vehicle,
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login,
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register,
   },
   {
     path: '/admin',

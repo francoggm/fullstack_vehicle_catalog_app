@@ -1,7 +1,7 @@
 <template>
   <v-app class="grey lighten-4">
     <Navbar/>
-    <v-content class="pa-10">
+    <v-content class="pl-10 pr-10 pt-10">
       <router-view/>
     </v-content>
 
@@ -25,3 +25,8 @@ export default {
   }
 };
 </script>
+<style>
+.v-application--wrap{
+  min-height: 90vh !important;
+}
+</style>
