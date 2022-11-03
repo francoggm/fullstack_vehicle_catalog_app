@@ -12,6 +12,9 @@ O banco de dados utilizado nesse sitema é o SQLite, pois possuí fácil integra
 <h5> Instalaçao </h5>
 Para instalar os pacotes necessários para o backend (Flask) acesse a pasta <strong>backend</strong> e instale os pacotes listados no </strong>requirements.txt</strong> para então, conseguir rodar o arquivo main.py que se encontra na mesma pasta. - É recomendado utilização de ambiente virtual para não ter conflito de versões -. Para a instalação do frontend acesse a pasta <strong>frontend</strong> e siga o passo a passo do README onde explica como instalar a aplicação Vue, depois apenas rode o comando de <strong>serve</strong> para fazer a integração com ambos.
 <br>
+<h5>Token JWT</h5>
+O sistema possui autenticação do tipo JWT (JSON Web Token), que é constituido por um token gerado no login do usuário, e nele contém as informações do mesmo (de forma codificada) junto com o tempo de validade do token, para realizar requisições no backend. O token é regenerado a cada 5 minutos, onde é feito uma requisição para manter o usuário logado, caso dê algum problema nesta requisição o usuário é deslogado e levado para a tela de login.
+<br>
 <h5> Deploy </h5>
 Em breve será feito o deploy da aplicação e disponibilizarei o link <a href="#">aqui</a>
 <br>
@@ -31,6 +34,22 @@ Demo gravado da aplicação rodando no dia 02/11/2022 com último commit apresen
   </ul>
   </br>
   </br>
+  <h5> Tecnologias </h5>
+  O app foi feito com as seguintes tecnologias:
+  <ul>
+   <li>Flask (Python)</li>
+   <li>Vue.js</li>
+   <li>
+    <ul>
+     <li>Vuetify</li>
+     <li>Vuex</li>
+     <li>Vue Routes</li>
+     <li>Axios</li>
+    </ul>
+   </li>
+   <li>SQLite</li>
+  </ul>
+  
     
 
 
