@@ -33,7 +33,6 @@ O app foi feito com as seguintes tecnologias:
  </ul>
  <li>SQLite</li>
 </ul>
-<br>
 <h5> Modelo .env (variáveis de ambiente) </h5>
 Para utilizar o token JWT é gerado uma decodificação através da secret-key salva no servidor Flask, para se ter essa variável é preciso que se gere uma randomização de caracteres e salve em variáveis de ambiente, assim como os dados do super administrador criado na primeira execução.
   Você pode criar um arquivo chamado <strong>.env</strong> no diretório <strong>backend</strong> e salvar como variáveis normais, ou então salvar diretamente no ambiente do sistema operacional.
