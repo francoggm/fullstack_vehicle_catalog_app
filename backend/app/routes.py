@@ -28,7 +28,11 @@ def get_vehicle(id):
     try:
         vehicle = Vehicle.query.get(int(id))
         if vehicle:
-            return jsonify({"vehicle": {"name": vehicle.name, "brand": vehicle.brand, "model": vehicle.model, "price": vehicle.show_price, "mileage": vehicle.show_mileage, "register": vehicle.show_register_date, "id": vehicle.id}}), 200
+            return jsonify({
+                "vehicle": {
+                    "name": vehicle.name, "brand": vehicle.brand, "model": vehicle.model, "price": vehicle.price, "mileage": vehicle.mileage, "register": vehicle.show_register_date, "format_price": vehicle.show_price, "format_mileage":vehicle.show_mileage, "format_register_date":vehicle.show_register_date, "image": b64encode(vehicle.img).decode('utf-8'),"id": vehicle.id
+                }
+            }), 200
         return jsonify({"message": "Error getting vehicle, no vehicle found"}), 404
     except:
         return jsonify({"message": "Error getting vehicle, try again"}), 400

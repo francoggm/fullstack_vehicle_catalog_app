@@ -131,15 +131,31 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
     + Body
 
             {
-                "message": "User has been registered",
+                "token": "[new_token]",
             }
 
-+ Response 406 (application/json)
++ Response 425 (application/json)
 
     + Body
 
             {
-                "message": "Error creating new user, missing informations",
+                "message": "",
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "Invalid user",
+            }
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "Invalid token",
             }
 
 # Usuários Cadastrados [/user]
@@ -160,11 +176,13 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
             {
                 "users": [
-                    "name": "Nome",
-                    "email": "email@email.com"
-                    "password": [password_hash_sha256]
-                    "admin": True,
-                    "public_id": [random_string_id]
+                    {
+                        "name": "Nome",
+                        "email": "email@email.com"
+                        "password": [password_hash_sha256]
+                        "admin": True,
+                        "public_id": [random_string_id]
+                    },
                 ],
             }
 
@@ -174,6 +192,14 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
             {
                 "message": "Error getting all users, no users found"
+            }
+
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
             }
 
 ### Listar usuário específico [GET /user/{public_id}]
@@ -211,6 +237,14 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
             {
                 "message": "Error getting all users, no users found"
+            }
+
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
             }
 
 ### Promover usuário para administrador [PUT /user/{public_id}]
@@ -252,6 +286,14 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
                 "message": "Error promoting user, no user found"
             }
 
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
+            }
+
 ### Deletando todos usuários [DELETE /user]
 
 + Request (application/json)
@@ -276,6 +318,14 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
             {
                 "message": "Error deleting user, try again"
+            }
+    
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
             }
 
 ### Deletando usuário [DELETE /user/{public_id}]
@@ -315,4 +365,313 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
             {
                 "message": "Error deleting user, no users found"
+            }
+            
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
+            }
+
+# Veículos Cadastrados [/vehicle]
+
+### Listar todos veículos cadastrados [GET /vehicle]
+
++ Request (application/json)
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "vehicles": [
+                    {
+                        "name": "HB20",
+                        "brand": "Hyundai",
+                        "model": "2017",
+                        "price": 50000,
+                        "mileage": 15000,
+                        "register": [datetime],
+                        "format_price": "R$ 50.000",
+                        "format_mileage": "15.000 km",
+                        "format_register_date": "2022-11-02",
+                        "image": [b64_encoded_image],
+                        "id": 1
+                    },
+                ]
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error getting all vehicles, try again"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error getting all vehicles, no vehicle found"
+            }
+
+### Listar veículo cadastrado [GET /vehicle/{id}]
+
++ Parameters 
+
+    + id (required, int, 1) ... ID gerado para cada veículo
+
++ Request (application/json)
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "vehicle": {
+                    "name": "HB20",
+                    "brand": "Hyundai",
+                    "model": "2017",
+                    "price": 50000,
+                    "mileage": 15000,
+                    "register": [datetime],
+                    "format_price": "R$ 50.000",
+                    "format_mileage": "15.000 km",
+                    "format_register_date": "2022-11-02",
+                    "image": [b64_encoded_image],
+                    "id": 1
+                }
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error getting vehicle, try again"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error getting vehicle, no vehicle found"
+            }
+
+### Criar novo veículo [POST /vehicle]
+
+| Parâmetro | Descrição |
+|---|---|
+| `name` | Nome do veículo. |
+| `brand` | Marca do veículo. |
+| `model` | Modelo do veículo. |
+| `price` | Preço do veículo. |
+| `mileage` | Quilometragem do veículo. |
+| `file` | [HTML_file]. |
+
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+
+    + Body
+
+        {
+            "name": "HB20",
+            "brand": "Hyundai",
+            "model": "2017",
+            "price": 50000,
+            "mileage": 20000,
+            "file": [HTML_image],
+        }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "vehicle": "Vehicle has been added"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error creating vehicle, missing some informations"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error creating vehicle, try again"
+            }
+    
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
+            }
+
+### Atualizando veículo cadastrado [PUT /vehicle/{id}]
+
+| Parâmetro | Descrição |
+|---|---|
+| `name` | Nome do veículo. |
+| `brand` | Marca do veículo. |
+| `model` | Modelo do veículo. |
+| `price` | Preço do veículo. |
+| `mileage` | Quilometragem do veículo. |
+| `file` | [opcional] - [HTML_file]. |
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+
+    + Body
+
+        {
+            "name": "HB20",
+            "brand": "Hyundai",
+            "model": "2017",
+            "price": 50000,
+            "mileage": 20000,
+            "file": [opcional]  - [HTML_image],
+        }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "vehicle": "Vehicle has been updated"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error updating vehicle, no vehicle found"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error updating vehicle, try again"
+            }
+    
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
+            }
+
+### Deletando todos veículos cadastrado [DELETE /vehicle]
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "All vehicles has been deleted"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting all vehicles, try again"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting all vehicles, no vehicle registered"
+            }
+    
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
+            }
+
+### Deletando veículo cadastrado [DELETE /vehicle/{id}]
+
++ Parameters 
+
+    + id (required, int, 1) ... ID gerado para cada veículo
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "message": "Vehicle has been deleted"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting vehicle, try again"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting vehicle, vehicle not found"
+            }
+
+    + Response 401 (application/json)
+
+    + Body
+
+            {
+                "message": "You do not have permission to do that"
             }
