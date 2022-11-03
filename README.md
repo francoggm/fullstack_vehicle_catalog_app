@@ -21,7 +21,21 @@ Em breve será feito o deploy da aplicação e disponibilizarei o link <a href="
 <h5> Demo </h5>
 Demo gravado da aplicação rodando no dia 02/11/2022 com último commit apresentado aqui, <strong>https://www.youtube.com/watch?v=mCntW1af10Y&ab_channel=GabrielFranco<strong> - Recomendado olhar em 1.5x, pois realizei o teste de todas as utilização de forma devagar e vísivel -.
  </br>
-<h5> Modelo .env (variáveis de ambiente) </h5>
+  <h5> Tecnologias </h5>
+  O app foi feito com as seguintes tecnologias:
+  <ul>
+   <li>Flask (Python)</li>
+   <li>Vue.js</li>
+   <ul>
+    <li>Vuetify</li>
+    <li>Vuex</li>
+    <li>Vue Routes</li>
+    <li>Axios</li>
+   </ul>
+  <li>SQLite</li>
+  </ul>
+ <br>
+ <h5> Modelo .env (variáveis de ambiente) </h5>
  Para utilizar o token JWT é gerado uma decodificação através da secret-key salva no servidor Flask, para se ter essa variável é preciso que se gere uma randomização de caracteres e salve em variáveis de ambiente, assim como os dados do super administrador criado na primeira execução.
   Você pode criar um arquivo chamado <strong>.env</strong> no diretório <strong>backend</strong> e salvar como variáveis normais, ou então salvar diretamente no ambiente do sistema operacional.
  </br>
@@ -33,22 +47,6 @@ Demo gravado da aplicação rodando no dia 02/11/2022 com último commit apresen
     <li>ADMIN_PASSWORD = '12345'</li>
   </ul>
   </br>
-  </br>
-  <h5> Tecnologias </h5>
-  O app foi feito com as seguintes tecnologias:
-  <ul>
-   <li>Flask (Python)</li>
-   <li>Vue.js</li>
-   <li>
-    <ul>
-     <li>Vuetify</li>
-     <li>Vuex</li>
-     <li>Vue Routes</li>
-     <li>Axios</li>
-    </ul>
-   </li>
-   <li>SQLite</li>
-  </ul>
   
     
 
