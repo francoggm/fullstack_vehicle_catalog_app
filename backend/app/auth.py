@@ -17,10 +17,10 @@ def register():
             user = User(name = data['name'], email = data['email'], password = data['password'], public_id=str(uuid.uuid4()))
             db.session.add(user)
             db.session.commit()
-            return jsonify({"message": "User has been registered"})
+            return jsonify({"message": "User has been registered"}), 200
         return make_response(jsonify({"message": "Error creating new user, missing informations"}), 406)
     except:
-        return make_response(jsonify({"message": "Error creating new user, try again"}))
+        return make_response(jsonify({"message": "Error creating new user, try again"}), 400)
 
 @auth.route('/login', methods=['POST'])
 def login():
