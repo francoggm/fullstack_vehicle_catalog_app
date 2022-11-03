@@ -18,12 +18,13 @@ Requisições para a API devem seguir os padrões:
 | `404` | Registro pesquisado não encontrado (Not found).|
 | `406` | Algumas informações podem estar faltando.|
 
-# Group Autenticação - JWT
+# Autenticação - JWT
 
-A API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como forma de autenticação/autorização.
+A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como forma de autenticação/autorização.
 
-
+# Autenticações
 ## Solicitando token de acesso [/auth/login]
+### POST
 
 | Parâmetro | Descrição |
 |---|---|
@@ -74,6 +75,7 @@ A API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como for
             }
 
 ## Registrando novo usuário [/auth/register]
+### POST
 
 | Parâmetro | Descrição |
 |---|---|
@@ -109,6 +111,7 @@ A API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como for
             }
 
 ## Solicitando novo token [/auth/refresh_token]
+### GET
 
 | Parâmetro | Descrição |
 |---|---|
@@ -139,55 +142,177 @@ A API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como for
                 "message": "Error creating new user, missing informations",
             }
 
-# Group Recursos
+# Usuários Cadastrados [/user]
 
-# Dados da empresa [/empresa]
-
-Buscar detalhes da conta.
-
-### Listar (List) [GET /empresa]
+### Listar todos usuários cadastrados [GET /user]
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Bearer [access_token]
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "users": [
+                    "name": "Nome",
+                    "email": "email@email.com"
+                    "password": [password_hash_sha256]
+                    "admin": True,
+                    "public_id": [random_string_id]
+                ],
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error getting all users, no users found"
+            }
+
+### Listar usuário específico [GET /user/{public_id}]
+
++ Parameters 
+
+    + public_id (required, string, '123_abc') ... ID Público gerado para cada usuário
 
 
-+ Response 200 (application/json)
++ Request (application/json)
 
-          {
-    "subdom": "zipline",
-    "nome": "ZIPLINE TECNOLOGIA LTDA",
-    "fantasia": "",
-    "cpfcnpj": "04693497000121",
-    "fones": "5530263336",
-    "emails": "suporte@zipline.com.br",
-    "end": "Rua do Acampamento",
-    "num": "380",
-    "compl": "SALA  1 - 2 E 3",
-    "bairro": "Centro",
-    "cidadeNome": "Santa Maria",
-    "cidadeCod": "4316907",
-    "uf": "RS",
-    "cep": "97050002",
-    "cifrao": "",
-    "crt": 10,
-    "atividade": 10,
-    "pSimples": 4,
-    "pICMS": "",
-    "pPIS": "",
-    "pCOFINS": "",
-    "baseIRPJ": "",
-    "baseCSLL": "",
-    "pIRPJ": "",
-    "pCSLL": "",
-    "inscMunicipal": "4628202",
-    "tipoIE": "",
-    "inscEstadual": "",
-    "cnae": "6203100",
-    "codTributMunicipio": "724",
-    "regimeTributacao": "0",
-    "cmc": "",
-    "RNTRC": ""
-}
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "user": {
+                    "name": "Nome",
+                    "email": "email@email.com"
+                    "password": [password_hash_sha256]
+                    "admin": True,
+                    "public_id": [random_string_id]
+                },
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error getting all users, no users found"
+            }
+
+### Promover usuário para administrador [PUT /user/{public_id}]
+
++ Parameters 
+
+    + public_id (required, string, '123_abc') ... ID Público gerado para cada usuário
+
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "user": "User has been promoted to admin"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "User already is admin"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error promoting user, no user found"
+            }
+
+### Deletando todos usuários [DELETE /user]
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "user": "All users has been deleted"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting user, try again"
+            }
+
+### Deletando usuário [DELETE /user/{public_id}]
+
++ Parameters 
+
+    + public_id (required, string, '123_abc') ... ID Público gerado para cada usuário
+
+
++ Request (application/json)
+
+    + Headers
+
+            {
+              "x-access-token": "[token]"
+            }
+        
+    + Response 200 (application/json)
+
+    + Body
+
+            {
+                "user": "User has been deleted"
+            }
+
+    + Response 400 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting user, try again"
+            }
+
+    + Response 404 (application/json)
+
+    + Body
+
+            {
+                "message": "Error deleting user, no users found"
+            }
