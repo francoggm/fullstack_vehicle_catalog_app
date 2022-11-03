@@ -29,7 +29,7 @@ O app foi feito com as seguintes tecnologias:
   <li>Vuetify</li>
    <li>Vuex</li>
   <li>Vue Routes</li>
-  <li>Axios</li
+  <li>Axios</li>
  </ul>
  <li>SQLite</li>
 </ul>
