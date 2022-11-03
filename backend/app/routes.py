@@ -92,7 +92,7 @@ def update_vehicle(current_user, id):
                     vehicle.mimetype = mimetype
                 db.session.commit()
                 return make_response(jsonify({"message": "Vehicle has been updated"}), 200)
-            return make_response(jsonify({"message": "Error creating vehicle, missing some informations"}), 400)
+            return make_response(jsonify({"message": "Error updating vehicle, missing some informations"}), 400)
         return make_response(jsonify({"message": "Error updating vehicle, no vehicle found"}), 400)
     except:
         return make_response(jsonify({"message": "Error updating vehicle, try again"}), 400)
