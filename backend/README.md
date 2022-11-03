@@ -485,14 +485,14 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
     + Body
 
-        {
-            "name": "HB20",
-            "brand": "Hyundai",
-            "model": "2017",
-            "price": 50000,
-            "mileage": 20000,
-            "file": [HTML_image],
-        }
+            {
+                "name": "HB20",
+                "brand": "Hyundai",
+                "model": "2017",
+                "price": 50000,
+                "mileage": 20000,
+                "file": [HTML_image],
+            }
         
     + Response 200 (application/json)
 
@@ -547,14 +547,14 @@ A  API utiliza [JWT](https://developers.docusign.com/platform/auth/jwt/) como fo
 
     + Body
 
-        {
-            "name": "HB20",
-            "brand": "Hyundai",
-            "model": "2017",
-            "price": 50000,
-            "mileage": 20000,
-            "file": [opcional]  - [HTML_image],
-        }
+            {
+                "name": "HB20",
+                "brand": "Hyundai",
+                "model": "2017",
+                "price": 50000,
+                "mileage": 20000,
+                "file": [opcional]  - [HTML_image],
+            }
         
     + Response 200 (application/json)
 
