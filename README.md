@@ -1,4 +1,4 @@
-<h4> --> Para visualizar a documentação e instalação do backend e frontend acesse a pasta de cada a partir desse diretório do GitHub, lá contém um README.md com a devida explicação sobre o mesmo <--</h4>
+<h4> // Para visualizar a documentação e instalação do backend e frontend acesse a pasta de cada um a partir desse diretório do GitHub, lá contém um README.md com a devida explicação sobre o mesmo // </h4>
 </br>
 </br>
 Projeto desenvolvido como um teste ténico da Verzel. Ele utiliza Flask, Vue.js, banco de dados SQLite e libs secundárias.
