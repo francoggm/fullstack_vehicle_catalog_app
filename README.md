@@ -38,7 +38,7 @@ Para utilizar o token JWT é gerado uma decodificação através da secret-key s
   Você pode criar um arquivo chamado <strong>.env</strong> no diretório <strong>backend</strong> e salvar como variáveis normais, ou então salvar diretamente no ambiente do sistema operacional.
 </br>
 </br>
- Exemplo de variáis salvas:
+ Exemplo de variáveis de ambiente salvas:
  <ul>
    <li>SECRET_KEY = 'random-string'</li>
    <li>ADMIN_EMAIL = 'adm@adm.com'</li>
