@@ -1,8 +1,6 @@
 <h4> // Para visualizar a documentação e instalação do backend e frontend acesse a pasta de cada um a partir desse diretório do GitHub, lá contém um README.md com a devida explicação sobre o mesmo // </h4>
 </br>
 </br>
-Projeto desenvolvido como um teste ténico da Verzel. Ele utiliza Flask, Vue.js, banco de dados SQLite e libs secundárias.
-</br>
 <h5> O projeto </h5>
 O projeto simula um catálogo de venda de veículos, onde é possível filtrá-los e ordena-los a partir de todos seus parâmetros cadastrados. O sistema utiliza a lógica do token JWT para fazer requisições no server side a partir de um super usuário (Admin), ou seja, qualquer um pode criar uma conta, mas apenas usuários administradores conseguem criar, atualizar e deletar usuários e veículos. Essas requisições (possível verificar a documentação da API na página <strong>backend</strong>) são feitas com um parâmetro de headers chamado <strong>x-access-token</strong> onde carrega o token necessário para cada requisição especial
 </br>
